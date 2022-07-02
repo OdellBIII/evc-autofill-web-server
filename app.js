@@ -20,7 +20,7 @@ const scopes = [
     "https://www.googleapis.com/auth/gmail.readonly"
 ];
 
-const oauthUrl = oauth2Cleint.generateAuthUrl({
+const oauthUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: scopes
 });
