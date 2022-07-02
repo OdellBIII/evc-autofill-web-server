@@ -72,5 +72,5 @@ async function getEmail(){
         userId: 'me'
     });
 
-    return result.emailaddress;
+    return result;
 }
