@@ -49,7 +49,7 @@ app.get('/welcome', (req, res) => {
     const {tokens} = OAuth2Client.getToken(code);
     OAuth2Client.setCredentials(tokens);
 
-    getEmail().then(emailaddress => {
+    await getEmail().then(emailaddress => {
 
         console.log(emailaddress);
     });
