@@ -49,12 +49,12 @@ app.get('/welcome', async function (req, res) {
     const {tokens} = await OAuth2Client.getToken(code);
     OAuth2Client.setCredentials(tokens);
 
-    getEmail().then(emailaddress => {
+    await getEmail().then(emailaddress => {
 
         console.log(emailaddress);
     });
 
-    res.sendFile("./welcome.html");
+    res.redirect("welcome.html");
 });
 
 app.get('/thankyou', (req, res) =>{
