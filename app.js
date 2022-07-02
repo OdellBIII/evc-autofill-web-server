@@ -2,7 +2,7 @@ const express = require('express');
 const {google} = require('googleapis');
 
 const app = express();
-const port = 3000;
+const port = process.event.PORT || 3000;
 
 const oauth2Cleint = new google.auth.OAuth2(
     // TODO: Have Client ID and Client secret be read from a file
