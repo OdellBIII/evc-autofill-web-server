@@ -11,7 +11,7 @@ const oauth2Cleint = new google.auth.OAuth2(
     // Client Secret
     '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',
     // Redirect url
-    'https://www.google.com'
+    'https://evc-web.herokuapp.com/welcome'
 
 );
 
@@ -35,7 +35,9 @@ app.get('/', (req, res) => {
 });
 
 app.get('/welcome', (req, res) => {
-
+    
+    const code = req.query.code;
+    console.log(code);
     res.send("Welcome to EVC!");
 });
 
