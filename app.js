@@ -20,6 +20,8 @@ const scopes = [
     "https://www.googleapis.com/auth/gmail.readonly"
 ];
 
+google.options({auth: OAuth2Client});
+
 const oauthUrl = OAuth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: scopes
@@ -46,12 +48,13 @@ app.get('/welcome', (req, res) => {
 
     const {tokens} = OAuth2Client.getToken(code);
     OAuth2Client.setCredentials(tokens);
-    google.options({OAuth2Client});
-    const result = gmail.users.getProfile({
-        userId: 'me'
+
+    getEmail().then(emailaddress => {
+
+        console.log(emailaddress);
     });
-    console.log(result.emailAddress)
-    res.sendFile("welcome.html");
+
+    res.sendFile("./welcome.html");
 });
 
 app.get('/thankyou', (req, res) =>{
@@ -62,3 +65,12 @@ app.get('/thankyou', (req, res) =>{
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
+
+async function getEmail(){
+
+    const result = await gmail.users.getProfile({
+        userId: 'me'
+    });
+
+    return result.emailaddress;
+}
