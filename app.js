@@ -41,15 +41,15 @@ app.get('/auth', (req, res) => {
 
 });
 
-app.get('/welcome', (req, res) => {
+app.get('/welcome', async function (req, res) {
     
     const code = req.query.code;
     console.log(code);
 
-    const {tokens} = OAuth2Client.getToken(code);
+    const {tokens} = await OAuth2Client.getToken(code);
     OAuth2Client.setCredentials(tokens);
 
-    await getEmail().then(emailaddress => {
+    getEmail().then(emailaddress => {
 
         console.log(emailaddress);
     });
