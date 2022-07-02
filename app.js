@@ -44,10 +44,10 @@ app.get('/welcome', (req, res) => {
     const code = req.query.code;
     console.log(code);
 
-    const {tokens} = await OAuth2Client.getToken(code);
+    const {tokens} = OAuth2Client.getToken(code);
     OAuth2Client.setCredentials(tokens);
     google.options({OAuth2Client});
-    const result = await gmail.users.getProfile({
+    const result = gmail.users.getProfile({
         userId: 'me'
     });
     console.log(result.emailAddress)
