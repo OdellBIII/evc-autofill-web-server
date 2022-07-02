@@ -1,5 +1,4 @@
 const express = require('express');
-const { OAuth2Client } = require('google-auth-library');
 const {google} = require('googleapis');
 const gmail = google.gmail('v1');
 
