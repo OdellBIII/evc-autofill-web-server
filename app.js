@@ -1,6 +1,13 @@
+process.env.REDIS_URL = 'rediss://:p0106415537bbfe9794f75f12bec9d7a7647bec4d6554a215adcdf69bebe0613b@ec2-3-221-25-176.compute-1.amazonaws.com:30750'
+
 const express = require('express');
+
+const redis = require('redis');
+const client = redis.createClient({url: process.env.REDIS_URL});
+
 const {google} = require('googleapis');
 const gmail = google.gmail('v1');
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -20,7 +27,6 @@ const scopes = [
     "https://www.googleapis.com/auth/gmail.readonly"
 ];
 
-google.options({auth: OAuth2Client});
 
 const oauthUrl = OAuth2Client.generateAuthUrl({
     access_type: 'offline',
@@ -49,6 +55,8 @@ app.get('/welcome', async function (req, res) {
     const {tokens} = await OAuth2Client.getToken(code);
     OAuth2Client.setCredentials(tokens);
 
+    google.options({auth: OAuth2Client});
+
     await getEmail().then(emailaddress => {
 
         console.log(emailaddress);
@@ -73,5 +81,5 @@ async function getEmail(){
         userId: 'me'
     });
 
-    return JSON.parse(result).emailaddress;
+    return result.data.emailAddress;
 }
