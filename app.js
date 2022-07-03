@@ -60,7 +60,8 @@ app.get('/welcome', async function (req, res) {
     await getEmail().then(emailaddress => {
 
         console.log(emailaddress);
-        //saveToFile(emailaddress, tokens)
+        console.log(typeof tokens);
+        //saveToDatabase(emailaddress, tokens)
     });
 
     res.redirect("welcome.html");
