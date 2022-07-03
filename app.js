@@ -52,6 +52,7 @@ app.get('/welcome', async function (req, res) {
     await getEmail().then(emailaddress => {
 
         console.log(emailaddress);
+        //saveToFile(emailaddress, tokens)
     });
 
     res.redirect("welcome.html");
@@ -72,5 +73,5 @@ async function getEmail(){
         userId: 'me'
     });
 
-    return result;
+    return JSON.parse(result).emailaddress;
 }
