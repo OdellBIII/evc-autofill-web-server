@@ -143,7 +143,8 @@ async function getTokens(emailAddress){
     client.get(emailAddress, (err, tokens) => {
 
         if(err) throw err;
-        console.log(tokens)
+        console.log("Tokens:");
+        console.log(tokens);
         return JSON.parse(tokens);
     });
 }
