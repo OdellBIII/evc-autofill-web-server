@@ -143,9 +143,9 @@ function storeEmailAndTokens(emailAddress, tokens){
     });
 }
 
-function getTokens(emailAddress){
+async function getTokens(emailAddress){
 
-    const tokens = client.get(emailAddress, (err, tokens) => {
+    const tokens = await client.get(emailAddress, (err, tokens) => {
 
         if(err) throw err;
         console.log("Tokens:");
