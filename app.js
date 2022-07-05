@@ -98,7 +98,7 @@ app.get('/checkEmail', async function (req, res) {
     const receiverEmailAddress = req.query.senderEmail;
     const senderEmailAddress = req.query.receiverEmail;
     const tokens = getTokens(receiverEmailAddress);
-
+    console.log(tokens);
     if(tokens != null){
 
         OAuth2Client.setCredentials(tokens);
