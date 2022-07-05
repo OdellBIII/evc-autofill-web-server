@@ -134,8 +134,13 @@ function storeEmailAndTokens(emailAddress, tokens){
     // Convert the tokens to a string and save to database
 
     const tokensString = JSON.stringify(tokens);
+    console.log(tokensString);
 
-    client.set(emailAddress, tokensString);
+    client.set(emailAddress, tokensString, (err, reply) => {
+
+        if(err) throw err;
+        console.log(reply);
+    });
 }
 
 function getTokens(emailAddress){
