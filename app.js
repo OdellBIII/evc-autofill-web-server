@@ -128,7 +128,7 @@ function storeEmailAndTokens(emailAddress, tokens){
 
 async function getTokens(emailAddress){
 
-    return JSON.parse(client.get(emailAdress));
+    return JSON.parse(client.get(emailAddress));
 }
 
 async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
