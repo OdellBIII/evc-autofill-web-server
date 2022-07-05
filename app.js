@@ -41,6 +41,7 @@ const oauthUrl = OAuth2Client.generateAuthUrl({
     scope: scopes
 });
 
+/*
 // Need to handle refresh tokens
 oauth2Client.on('tokens', (tokens) => {
 
@@ -50,6 +51,7 @@ oauth2Client.on('tokens', (tokens) => {
     }
     console.log(tokens.access_token);
 });
+*/
 
 app.get('/home', (req, res) => {
 
