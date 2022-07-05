@@ -128,10 +128,12 @@ function storeEmailAndTokens(emailAddress, tokens){
 
 async function getTokens(emailAddress){
 
-    const tokens = client.get(emailAddress);
-    console.log(typeof tokens)
-    console.log(tokens)
-    return JSON.parse(tokens);
+    client.get(emailAddress, (err, tokens) => {
+
+        if(err) throw err;
+
+        return JSON.parse(reply);
+    });
 }
 
 async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
