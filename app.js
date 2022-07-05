@@ -149,11 +149,10 @@ async function getTokens(emailAddress){
     const tokens = await client.get(emailAddress, (err, tokens) => {
 
         if(err) throw err;
-        console.log(tokens);
-        return JSON.parse(tokens);
+        return tokens;
     });
 
-    return tokens;
+    return JSON.parse(tokens);
 }
 
 async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
