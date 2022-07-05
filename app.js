@@ -60,7 +60,6 @@ app.get('/welcome', async function (req, res) {
     await getEmail().then(emailaddress => {
 
         console.log(emailaddress);
-        console.log(typeof tokens);
         storeEmailAndTokens(emailaddress, tokens);
     });
 
@@ -74,17 +73,26 @@ app.get('/thankyou', (req, res) =>{
 
 app.get('/checkEmail', async function (req, res) { 
 
+    // This endpoint is for retrieving a verification code from a user's email
+
     const receiverEmailAddress = req.query.senderEmail;
     const senderEmailAddress = req.query.receiverEmail;
     const tokens = getTokens(receiverEmailAddress);
-    OAuth2Client.setCredentials(tokens);
-    google.options({auth: OAuth2Client});
 
-    await getVerificationCode(senderEmailAddress, receiverEmailAddress).then(verificationCode => {
+    if(tokens != null){
 
-        console.log(verificationCode);
-        res.json({code : verificationCode});
-    });
+        OAuth2Client.setCredentials(tokens);
+        google.options({auth: OAuth2Client});
+
+        await getVerificationCode(senderEmailAddress, receiverEmailAddress).then(verificationCode => {
+
+            console.log(verificationCode);
+            res.json({code : verificationCode});
+        });
+    }else{
+
+        res.json({code : "", message : "user's email not found"});
+    }
 
 });
 
@@ -101,7 +109,7 @@ async function getEmail(){
     return result.data.emailAddress;
 }
 
-async function storeEmailAndTokens(emailAddress, tokens){
+function storeEmailAndTokens(emailAddress, tokens){
 
     // Convert the tokens to a string and save to database
 
