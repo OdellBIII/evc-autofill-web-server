@@ -98,9 +98,8 @@ app.get('/checkEmail', async function (req, res) {
     const senderEmailAddress = req.query.senderEmail;
     const receiverEmailAddress = req.query.receiverEmail;
     const tokens = await getTokens(receiverEmailAddress);
-    console.log("AAA");
-    console.log(tokens);
-    console.log("BBB");
+    console.log("AAAA");
+    console.log("Type of tokens " + typeof tokens);
     if(tokens != null){
 
         OAuth2Client.setCredentials(tokens);
@@ -150,7 +149,6 @@ async function getTokens(emailAddress){
     const tokens = await client.get(emailAddress, (err, tokens) => {
 
         if(err) throw err;
-        console.log("Tokens:");
         console.log(tokens);
         return JSON.parse(tokens);
     });
