@@ -4,7 +4,13 @@ const express = require('express');
 
 // Redis database setup
 const redis = require('redis');
-const client = redis.createClient({url: process.env.REDIS_URL});
+const client = redis.createClient({
+    url: process.env.REDIS_URL,
+    socket: {
+        tls: true,
+        rejectUnauthorized: false
+      }
+});
 client.connect();
 
 const {google} = require('googleapis');
