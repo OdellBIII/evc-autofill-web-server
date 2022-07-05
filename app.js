@@ -138,7 +138,7 @@ function storeEmailAndTokens(emailAddress, tokens){
     client.set(emailAddress, tokensString);
 }
 
-async function getTokens(emailAddress){
+function getTokens(emailAddress){
 
     client.get(emailAddress, (err, tokens) => {
 
