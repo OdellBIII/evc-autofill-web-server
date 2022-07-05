@@ -2,8 +2,10 @@ process.env.REDIS_URL = 'rediss://:p0106415537bbfe9794f75f12bec9d7a7647bec4d6554
 
 const express = require('express');
 
+// Redis database setup
 const redis = require('redis');
 const client = redis.createClient({url: process.env.REDIS_URL});
+client.connect();
 
 const {google} = require('googleapis');
 const gmail = google.gmail('v1');
