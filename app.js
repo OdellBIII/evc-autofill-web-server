@@ -167,6 +167,10 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
         userId : receiverEmailAddress,
         maxResults : 1,
         q : `in:sent from:${senderEmailAddress} after:${afterDate}`
+    }, (err, reply) =>{
+
+        if(err) throw err;
+        return reply;
     });
 
     console.log("AAA");
