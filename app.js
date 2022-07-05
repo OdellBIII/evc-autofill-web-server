@@ -98,8 +98,7 @@ app.get('/checkEmail', async function (req, res) {
     const senderEmailAddress = req.query.senderEmail;
     const receiverEmailAddress = req.query.receiverEmail;
     const tokens = await getTokens(receiverEmailAddress);
-    console.log("AAAA");
-    console.log("Type of tokens " + typeof tokens);
+
     if(tokens != null){
 
         OAuth2Client.setCredentials(tokens);
@@ -166,13 +165,13 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
     const afterDate = year + "/" + month + "/" + date;
     const messageList = await gmail.users.messages.list({
         userId : receiverEmailAddress,
-        requestBody : {
-            maxResults : 1,
-            q : `in:sent from:${senderEmailAddress} after:${afterDate}`
-        }
+        maxResults : 1,
+        q : `in:sent from:${senderEmailAddress} after:${afterDate}`
     });
 
+    console.log("AAA");
     console.log(messageList);
+    console.log("BBB");
 
     const verificationMessageId = messageList.messages[0].id;
 
