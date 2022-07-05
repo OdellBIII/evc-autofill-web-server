@@ -95,8 +95,8 @@ app.get('/checkEmail', async function (req, res) {
 
     // This endpoint is for retrieving a verification code from a user's email
 
-    const receiverEmailAddress = req.query.senderEmail;
-    const senderEmailAddress = req.query.receiverEmail;
+    const senderEmailAddress = req.query.senderEmail;
+    const receiverEmailAddress = req.query.receiverEmail;
     const tokens = await getTokens(receiverEmailAddress);
     console.log("AAA");
     console.log(tokens);
