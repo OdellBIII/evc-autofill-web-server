@@ -61,15 +61,31 @@ app.get('/welcome', async function (req, res) {
 
         console.log(emailaddress);
         console.log(typeof tokens);
-        //saveToDatabase(emailaddress, tokens)
+        storeEmailAndTokens(emailaddress, tokens);
     });
 
-    res.redirect("welcome.html");
+    res.redirect("thankyou");
 });
 
 app.get('/thankyou', (req, res) =>{
 
-    console.log(req.query.email);
+    res.redirect("welcome.html");
+});
+
+app.get('/checkEmail', async function (req, res) { 
+
+    const receiverEmailAddress = req.query.senderEmail;
+    const senderEmailAddress = req.query.receiverEmail;
+    const tokens = getTokens(receiverEmailAddress);
+    OAuth2Client.setCredentials(tokens);
+    google.options({auth: OAuth2Client});
+
+    await getVerificationCode(senderEmailAddress, receiverEmailAddress).then(verificationCode => {
+
+        console.log(verificationCode);
+        res.json({code : verificationCode});
+    });
+
 });
 
 app.listen(port, () => {
@@ -83,4 +99,55 @@ async function getEmail(){
     });
 
     return result.data.emailAddress;
+}
+
+async function storeEmailAndTokens(emailAddress, tokens){
+
+    // Convert the tokens to a string and save to database
+
+    const tokensString = JSON.stringify(tokens);
+
+    client.set(emailAddress, tokensString);
+}
+
+async function getTokens(emailAddress){
+
+    return JSON.parse(client.get(emailAdress));
+}
+
+async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
+
+    // Use Gmail API to retrieve email with verification code in it
+    let date_ob = new Date();
+    const year = date_ob.getFullYear();
+    const month = date_ob.getMonth();
+    const date = date_ob.getDate();
+
+    const afterDate = year + "/" + month + "/" + date;
+    const messageList = await gmail.users.messages.list({
+        userId : receiverEmailAddress,
+        requestBody : {
+            maxResults : 1,
+            q : `in:sent from:${senderEmailAddress} after:${afterDate}`
+        }
+    });
+
+    console.log(messageList);
+
+    const verificationMessageId = messageList.messages[0].id;
+
+    const verificationMessage = await gmail.users.messages.get({
+        userId :receiverEmailAddress,
+        id : verificationMessageId,
+        format : 'full'
+    });
+
+    console.log(verificationMessage);
+
+    if(verificationMessage != null){
+
+        let buffer = Buffer.from(verificationMessage.payload.body.data, "base64");
+        let messageBody = buffer.toString("utf8");
+        console.log(messageBody);
+    }
 }
