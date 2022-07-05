@@ -88,7 +88,7 @@ app.get('/welcome', async function (req, res) {
 
 app.get('/thankyou', (req, res) =>{
 
-    res.redirect("welcome.html");
+    res.redirect("./welcome.html");
 });
 
 app.get('/checkEmail', async function (req, res) { 
@@ -145,13 +145,15 @@ function storeEmailAndTokens(emailAddress, tokens){
 
 function getTokens(emailAddress){
 
-    client.get(emailAddress, (err, tokens) => {
+    const tokens = await client.get(emailAddress, (err, tokens) => {
 
         if(err) throw err;
         console.log("Tokens:");
         console.log(tokens);
         return JSON.parse(tokens);
     });
+
+    return tokens;
 }
 
 async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
