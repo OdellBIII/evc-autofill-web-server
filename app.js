@@ -187,7 +187,7 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
 
             if(err) throw err;
 
-            console.log("Verification Message in callback: " + verificationMessage);
+            console.log("Verification Message in callback: " + JSON.stringify(verificationMessage));
             return verificationMessage;
         });
 
