@@ -170,8 +170,7 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
     
     const listParametersDummy = {
         userId : receiverEmailAddress,
-        maxResults : 10,
-        q : `in:sent` 
+        maxResults : 10
     };
 
     const messageList = await gmail.users.messages.list(listParametersDummy, (err, reply) =>{
