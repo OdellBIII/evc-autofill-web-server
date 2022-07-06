@@ -172,7 +172,7 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
         maxResults : 10
     };
 
-    await gmail.users.messages.list(listParameters, (err, messageList) => {
+    await gmail.users.messages.list(listParameters, async function (err, messageList) {
 
         if(err) throw err;
 
