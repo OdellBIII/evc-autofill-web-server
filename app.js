@@ -161,6 +161,7 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
     const year = date_ob.getFullYear();
     const month = date_ob.getMonth();
     const date = date_ob.getDate();
+    const afterDate = year + "/" + month + "/" + date;
     const listParameters = {
         userId : receiverEmailAddress,
         maxResults : 1,
@@ -173,7 +174,6 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
         q : `in:sent` 
     };
 
-    const afterDate = year + "/" + month + "/" + date;
     const messageList = await gmail.users.messages.list(listParametersDummy, (err, reply) =>{
 
         if(err) throw err;
