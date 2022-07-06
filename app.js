@@ -183,6 +183,7 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
 
         const verificationMessageId = messageList.messages[0].id;
 
+        /*
         const verificationMessage = await gmail.users.messages.get({
             userId :receiverEmailAddress,
             id : verificationMessageId,
@@ -197,7 +198,8 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
             let messageBody = buffer.toString("utf8");
             console.log(messageBody);
         }
-        return reply;
+        */
+        return messageList;
     });
 
 }
