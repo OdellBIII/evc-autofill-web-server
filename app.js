@@ -165,14 +165,16 @@ function getMessageId(messageList){
 
 function parseMessageForCode(message){
 
-    console.log("Verification Message: " + verificationMessage);
+    console.log("Verification Message: " + message);
 
-    if(verificationMessage != null){
+    if(message != null){
 
-        let buffer = Buffer.from(verificationMessage.payload.body.data, "base64");
+        let buffer = Buffer.from(message.payload.body.data, "base64");
         let messageBody = buffer.toString("utf8");
         console.log(messageBody);
     }
+
+    return messageBody;
 }
 
 async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
@@ -205,7 +207,7 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
 
         if(err) throw err;
         const verificationMessageID = getMessageId(messageList);
-        if(messageID != null){
+        if(verificationMessageID != null){
 
             console.log("Verification Message ID: " + verificationMessageID);
             verificationMessageRequestParams.id = verificationMessageID
