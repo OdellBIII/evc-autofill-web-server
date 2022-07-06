@@ -153,6 +153,28 @@ async function getTokens(emailAddress){
     return JSON.parse(tokens);
 }
 
+function getMessageId(messageList){
+
+    if(messageList.data.messages == null){
+
+        return ""
+    }
+
+    return messageList.data.messages[0].id;
+}
+
+function parseMessageForCode(message){
+
+    console.log("Verification Message: " + verificationMessage);
+
+    if(verificationMessage != null){
+
+        let buffer = Buffer.from(verificationMessage.payload.body.data, "base64");
+        let messageBody = buffer.toString("utf8");
+        console.log(messageBody);
+    }
+}
+
 async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
 
     // Use Gmail API to retrieve email with verification code in it
@@ -164,43 +186,43 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
     const listParameters = {
         userId : receiverEmailAddress,
         maxResults : 1,
-        q : `in:sent from:${senderEmailAddress} after:${afterDate}`
+        q : `from:${senderEmailAddress} after:${afterDate}`
     };
-    
+    let verificationMessageRequestParams = {
+
+                userId :receiverEmailAddress,
+                id : "",
+                format : 'full'
+    }
+    /*
     const listParametersDummy = {
         userId : receiverEmailAddress,
         maxResults : 10
     };
+    */
 
     await gmail.users.messages.list(listParameters, async function (err, messageList) {
 
         if(err) throw err;
+        const verificationMessageID = getMessageId(messageList);
+        if(messageID != null){
 
-        const verificationMessageId = messageList.data.messages[0].id;
-        console.log("Verification Message ID: " + verificationMessageId);
+            console.log("Verification Message ID: " + verificationMessageID);
+            verificationMessageRequestParams.id = verificationMessageID
+            await gmail.users.messages.get(verificationMessageRequestParams, (err, verificationMessage) => {
 
-        const verificationMessage = await gmail.users.messages.get({
-            userId :receiverEmailAddress,
-            id : verificationMessageId,
-            format : 'full'
-        }, (err, verificationMessage) => {
+                if(err) throw err;
+                console.log("Verification Message in callback: " + JSON.stringify(verificationMessage));
+                const verificationCode = parseMessageForCode(verificationMessage);
 
-            if(err) throw err;
+                return verificationCode;
+            });
 
-            console.log("Verification Message in callback: " + JSON.stringify(verificationMessage));
-            return verificationMessage;
-        });
+        }else{
 
-        console.log("Verification Message: " + verificationMessage);
-
-        if(verificationMessage != null){
-
-            let buffer = Buffer.from(verificationMessage.payload.body.data, "base64");
-            let messageBody = buffer.toString("utf8");
-            console.log(messageBody);
+            return "";
         }
 
-        return messageList;
     });
 
 }
