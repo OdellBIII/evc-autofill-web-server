@@ -173,31 +173,31 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
         maxResults : 10
     };
 
-    const messageList = await gmail.users.messages.list(listParametersDummy, (err, reply) =>{
+    await gmail.users.messages.list(listParametersDummy, (err, messageList) => {
 
         if(err) throw err;
-        console.log(reply);
+        console.log(messageList);
+        console.log("AAA");
+        console.log(messageList);
+        console.log("BBB");
+
+        const verificationMessageId = messageList.messages[0].id;
+
+        const verificationMessage = await gmail.users.messages.get({
+            userId :receiverEmailAddress,
+            id : verificationMessageId,
+            format : 'full'
+        });
+
+        console.log(verificationMessage);
+
+        if(verificationMessage != null){
+
+            let buffer = Buffer.from(verificationMessage.payload.body.data, "base64");
+            let messageBody = buffer.toString("utf8");
+            console.log(messageBody);
+        }
         return reply;
     });
 
-    console.log("AAA");
-    console.log(messageList);
-    console.log("BBB");
-
-    const verificationMessageId = messageList.messages[0].id;
-
-    const verificationMessage = await gmail.users.messages.get({
-        userId :receiverEmailAddress,
-        id : verificationMessageId,
-        format : 'full'
-    });
-
-    console.log(verificationMessage);
-
-    if(verificationMessage != null){
-
-        let buffer = Buffer.from(verificationMessage.payload.body.data, "base64");
-        let messageBody = buffer.toString("utf8");
-        console.log(messageBody);
-    }
 }
