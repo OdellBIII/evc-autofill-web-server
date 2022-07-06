@@ -106,7 +106,6 @@ app.get('/checkEmail', async function (req, res) {
 
         await getVerificationCode(senderEmailAddress, receiverEmailAddress).then(verificationCode => {
 
-            console.log(verificationCode);
             res.json({code : verificationCode});
         });
     }else{
