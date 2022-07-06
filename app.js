@@ -174,7 +174,7 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
     });
 
     console.log("AAA");
-    console.log(messageList.messages);
+    console.log(messageList);
     console.log("BBB");
 
     const verificationMessageId = messageList.messages[0].id;
