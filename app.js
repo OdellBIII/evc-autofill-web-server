@@ -168,7 +168,7 @@ function parseMessageForCode(message){
     console.log("Verification Message: " + message);
     let messageBody = "";
     let verificationCode = "";
-    const sixDigitRegex = "/\d{6}"
+    const sixDigitRegex = /\d{6}/g;
     if(message != null){
 
         let buffer = Buffer.from(message.data.payload.parts[0].body.data, "base64");
