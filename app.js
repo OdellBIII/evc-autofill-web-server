@@ -169,7 +169,7 @@ function parseMessageForCode(message){
 
     if(message != null){
 
-        let buffer = Buffer.from(message.payload.body.data, "base64");
+        let buffer = Buffer.from(message.payload.parts[0].body.data, "base64");
         let messageBody = buffer.toString("utf8");
         console.log(messageBody);
     }
