@@ -166,11 +166,11 @@ function getMessageId(messageList){
 function parseMessageForCode(message){
 
     console.log("Verification Message: " + message);
-
+    let messageBody = "";
     if(message != null){
 
-        let buffer = Buffer.from(message.payload.parts[0].body.data, "base64");
-        let messageBody = buffer.toString("utf8");
+        let buffer = Buffer.from(message.data.payload.parts[0].body.data, "base64");
+        messageBody = buffer.toString("utf8");
         console.log(messageBody);
     }
 
