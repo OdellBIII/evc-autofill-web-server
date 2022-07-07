@@ -167,14 +167,17 @@ function parseMessageForCode(message){
 
     console.log("Verification Message: " + message);
     let messageBody = "";
+    let verificationCode = "";
+    const sixDigitRegex = "/\d{6}"
     if(message != null){
 
         let buffer = Buffer.from(message.data.payload.parts[0].body.data, "base64");
         messageBody = buffer.toString("utf8");
-        console.log(messageBody);
+        verificationCode = messageBody.match(sixDigitRegex)[0];
+        console.log(verificationCode);
     }
 
-    return messageBody;
+    return verificationCode;
 }
 
 async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
