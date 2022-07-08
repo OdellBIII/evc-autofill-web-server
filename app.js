@@ -104,11 +104,11 @@ app.get('/checkEmail', async function (req, res) {
         OAuth2Client.setCredentials(tokens);
         google.options({auth: OAuth2Client});
 
-        await getVerificationCode(senderEmailAddress, receiverEmailAddress).then(verificationCode => {
+        const verificationCode = await getVerificationCode(senderEmailAddress, receiverEmailAddress);
 
-            console.log("Verification Code: " + verificationCode);
-            res.json({code : verificationCode});
-        });
+        console.log("Verification Code: " + verificationCode);
+        res.json({code : verificationCode});
+
     }else{
 
         res.json({code : "", message : "user's email not found"});
