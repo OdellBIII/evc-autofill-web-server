@@ -106,6 +106,7 @@ app.get('/checkEmail', async function (req, res) {
 
         await getVerificationCode(senderEmailAddress, receiverEmailAddress).then(verificationCode => {
 
+            console.log("Verification Code: " + verificationCode);
             res.json({code : verificationCode});
         });
     }else{
@@ -165,7 +166,6 @@ function getMessageId(messageList){
 
 function parseMessageForCode(message){
 
-    console.log("Verification Message: " + message);
     let messageBody = "";
     let verificationCode = "";
     const sixDigitRegex = /\d{6}/g;
@@ -193,12 +193,14 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
         maxResults : 1,
         q : `from:${senderEmailAddress} after:${afterDate}`
     };
+
     let verificationMessageRequestParams = {
 
                 userId :receiverEmailAddress,
                 id : "",
                 format : 'full'
     }
+
     /*
     const listParametersDummy = {
         userId : receiverEmailAddress,
@@ -210,14 +212,14 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
 
         if(err) throw err;
         const verificationMessageID = getMessageId(messageList);
+
         if(verificationMessageID != null){
 
-            console.log("Verification Message ID: " + verificationMessageID);
+            //console.log("Verification Message ID: " + verificationMessageID);
             verificationMessageRequestParams.id = verificationMessageID
-            await gmail.users.messages.get(verificationMessageRequestParams, (err, verificationMessage) => {
+            return await gmail.users.messages.get(verificationMessageRequestParams, (err, verificationMessage) => {
 
                 if(err) throw err;
-                console.log("Verification Message in callback: " + JSON.stringify(verificationMessage));
                 const verificationCode = parseMessageForCode(verificationMessage);
 
                 return verificationCode;
