@@ -174,9 +174,9 @@ function parseMessageForCode(message){
         let buffer = Buffer.from(message.data.payload.parts[0].body.data, "base64");
         messageBody = buffer.toString("utf8");
         verificationCode = messageBody.match(sixDigitRegex)[0];
-        console.log(verificationCode);
     }
 
+    console.log(verificationCode);
     return verificationCode;
 }
 
@@ -208,7 +208,7 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
     };
     */
 
-    const result = await gmail.users.messages.list(listParameters, async function (err, messageList) {
+    let result = await gmail.users.messages.list(listParameters, async function (err, messageList) {
 
         if(err) throw err;
         const verificationMessageID = getMessageId(messageList);
@@ -217,11 +217,11 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
 
             //console.log("Verification Message ID: " + verificationMessageID);
             verificationMessageRequestParams.id = verificationMessageID
-            const verificationCodeResult = await gmail.users.messages.get(verificationMessageRequestParams, (err, verificationMessage) => {
+            let verificationCodeResult = await gmail.users.messages.get(verificationMessageRequestParams, (err, verificationMessage) => {
 
                 if(err) throw err;
                 const verificationCode = parseMessageForCode(verificationMessage);
-
+                console.log(verificationCode);
                 return verificationCode;
             });
 
