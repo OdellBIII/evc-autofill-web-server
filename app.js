@@ -217,13 +217,15 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
 
             //console.log("Verification Message ID: " + verificationMessageID);
             verificationMessageRequestParams.id = verificationMessageID
-            return await gmail.users.messages.get(verificationMessageRequestParams, (err, verificationMessage) => {
+            const verificationCodeResult = await gmail.users.messages.get(verificationMessageRequestParams, (err, verificationMessage) => {
 
                 if(err) throw err;
                 const verificationCode = parseMessageForCode(verificationMessage);
 
                 return verificationCode;
             });
+
+            return verificationCodeResult;
 
         }else{
 
