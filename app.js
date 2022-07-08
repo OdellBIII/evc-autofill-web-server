@@ -176,7 +176,6 @@ function parseMessageForCode(message){
         verificationCode = messageBody.match(sixDigitRegex)[0];
     }
 
-    console.log(verificationCode);
     return verificationCode;
 }
 
@@ -225,6 +224,7 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
                 return verificationCode;
             });
 
+            console.log("VerificationCodeResult: " + verificationCodeResult);
             return verificationCodeResult;
 
         }else{
