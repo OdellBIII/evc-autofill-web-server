@@ -207,7 +207,7 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
     };
     */
 
-    let result = await gmail.users.messages.list(listParameters, async function (err, messageList) {
+    return await gmail.users.messages.list(listParameters, async function (err, messageList) {
 
         if(err) throw err;
         const verificationMessageID = getMessageId(messageList);
