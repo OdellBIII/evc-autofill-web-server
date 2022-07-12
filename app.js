@@ -176,7 +176,11 @@ function parseMessageForCode(message){
 
         let buffer = Buffer.from(message.data.payload.parts[0].body.data, "base64");
         messageBody = buffer.toString("utf8");
-        verificationCode = messageBody.match(sixDigitRegex)[0];
+        matchList = messageBody.match(sixDigitRegex);
+        
+        if(matchList.length != 0){
+            verificationCode = matchList[0];
+        }
     }
 
     return verificationCode;
@@ -210,6 +214,7 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
     };
     */
 
+    /*
     let result = await gmail.users.messages.list(listParameters, async function (err, messageList) {
 
         if(err) throw err;
@@ -232,13 +237,30 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
             return verificationCodeResult;
             */
 
+        /*
         }else{
 
             return "";
         }
 
     });
+    */
 
-    console.log("Result: " + result);
-    return result;
+    try{
+
+        let messageList = await gmail.users.messages.list(listParameters);
+        const verificationMessageID = getMessageId(messageList);
+
+        verificationMessageRequestParams.id = verificationMessageID
+        const verificationMessage = await gmail.users.messages.get(verificationMessageRequestParams); 
+
+        const verificationCode = parseMessageForCode(verificationMessage);
+        console.log(verificationCode);
+
+        return verificationCode;
+
+    }catch(e){
+
+        throw e;
+    }
 }
