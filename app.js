@@ -104,10 +104,13 @@ app.get('/checkEmail', async function (req, res) {
         OAuth2Client.setCredentials(tokens);
         google.options({auth: OAuth2Client});
 
-        const verificationCode = await getVerificationCode(senderEmailAddress, receiverEmailAddress);
+        //const verificationCode = await getVerificationCode(senderEmailAddress, receiverEmailAddress);
+        getVerificationCode(senderEmailAddress, receiverEmailAddress).then(verificationCode => {
 
-        console.log("Verification Code: " + verificationCode);
-        res.json({code : verificationCode});
+            console.log("Verification Code: " + verificationCode);
+            res.json({code : verificationCode});
+        });
+
 
     }else{
 
@@ -207,7 +210,7 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
     };
     */
 
-    return await gmail.users.messages.list(listParameters, async function (err, messageList) {
+    let result = await gmail.users.messages.list(listParameters, async function (err, messageList) {
 
         if(err) throw err;
         const verificationMessageID = getMessageId(messageList);
@@ -216,7 +219,7 @@ async function getVerificationCode(senderEmailAddress, receiverEmailAddress){
 
             //console.log("Verification Message ID: " + verificationMessageID);
             verificationMessageRequestParams.id = verificationMessageID
-            return gmail.users.messages.get(verificationMessageRequestParams, (err, verificationMessage) => {
+            return await gmail.users.messages.get(verificationMessageRequestParams, (err, verificationMessage) => {
 
                 if(err) throw err;
                 const verificationCode = parseMessageForCode(verificationMessage);
