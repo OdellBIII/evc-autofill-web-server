@@ -3,6 +3,7 @@ process.env.REDIS_URL = 'rediss://:p0106415537bbfe9794f75f12bec9d7a7647bec4d6554
 const express = require('express');
 
 // Redis database setup
+// TODO: Replace TLS with SSL because TLS keeps crashing the server
 const redis = require('redis');
 const client = redis.createClient({
     url: process.env.REDIS_URL,
@@ -19,6 +20,8 @@ const gmail = google.gmail('v1');
 
 const app = express();
 const port = process.env.PORT || 3000;
+var cors = require('cors');
+app.use(cors);
 
 const OAuth2Client = new google.auth.OAuth2(
     // TODO: Have Client ID and Client secret be read from a file
@@ -40,18 +43,6 @@ const oauthUrl = OAuth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: scopes
 });
-
-/*
-// Need to handle refresh tokens
-oauth2Client.on('tokens', (tokens) => {
-
-    if (tokens.refresh_token) {
-      // store the refresh_token in my database!
-      console.log(tokens.refresh_token);
-    }
-    console.log(tokens.access_token);
-});
-*/
 
 app.get('/home', (req, res) => {
 
