@@ -1,0 +1,6 @@
+Things I've learned
+- CORS
+- Service Workers in Chrome Extensions
+- Using the storage API
+- Setting up OAuth2 Clients
+- 

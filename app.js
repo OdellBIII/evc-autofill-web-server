@@ -90,6 +90,8 @@ app.get('/checkEmail', async function (req, res) {
     const receiverEmailAddress = req.query.receiverEmail;
     const tokens = await getTokens(receiverEmailAddress);
 
+    console.log("Receiver Email Address: " + receiverEmailAddress);
+    console.log("Tokens: " + tokens);
     if(tokens != null){
 
         OAuth2Client.setCredentials(tokens);
@@ -163,6 +165,7 @@ function parseMessageForCode(message){
     let messageBody = "";
     let verificationCode = "";
     const sixDigitRegex = /\d{6}/g;
+    //const sixDigitRegex =(\d(\s+)?){6}/g;
     if(message != null){
 
         let buffer = Buffer.from(message.data.payload.parts[0].body.data, "base64");
