@@ -21,7 +21,9 @@ const gmail = google.gmail('v1');
 const app = express();
 const port = process.env.PORT || 3000;
 var cors = require('cors');
-app.use(cors());
+app.use(cors({
+    origin: '*'
+}));
 
 const OAuth2Client = new google.auth.OAuth2(
     // TODO: Have Client ID and Client secret be read from a file
