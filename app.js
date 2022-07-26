@@ -8,10 +8,12 @@ const redis = require('redis');
 const client = redis.createClient({
     url: process.env.REDIS_URL,
     socket: {
-        tls: true,
+        tls: false,
         rejectUnauthorized: false
       }
 });
+
+client.on("error", (error) => {console.log("REDIS error: " + error)});
 client.connect();
 
 const {google} = require('googleapis');
