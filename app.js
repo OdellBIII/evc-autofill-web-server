@@ -60,6 +60,21 @@ app.get('/', (req, res) => {
 
 app.get('/auth', (req, res) => {
 
+    res.redirect(oauthUrl);
+});
+
+app.get('/verifyPermissions', (req, res) => {
+
+    const userEmail = req.query.userEmail;
+    const tokens = await getTokens(userEmail);
+
+    if(tokens != null){
+
+        res.json({hasPermission: true});
+    }else{
+
+        res.json({hasPermission: false});
+    }
 });
 
 app.get('/welcome', async function (req, res) {
