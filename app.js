@@ -1,9 +1,10 @@
-process.env.REDIS_URL = 'rediss://:p0106415537bbfe9794f75f12bec9d7a7647bec4d6554a215adcdf69bebe0613b@ec2-3-221-25-176.compute-1.amazonaws.com:30750'
-
 const express = require('express');
+// Imports the Google Cloud client library
+const {PubSub} = require('@google-cloud/pubsub');
 
 // Redis database setup
 // TODO: Replace TLS with SSL because TLS keeps crashing the server
+process.env.REDIS_URL = 'rediss://:p0106415537bbfe9794f75f12bec9d7a7647bec4d6554a215adcdf69bebe0613b@ec2-3-221-25-176.compute-1.amazonaws.com:30750'
 const redis = require('redis');
 const client = redis.createClient({
     url: process.env.REDIS_URL,
@@ -147,7 +148,6 @@ async function getEmail(){
 function storeEmailAndTokens(emailAddress, tokens){
 
     // Convert the tokens to a string and save to database
-
     const tokensString = JSON.stringify(tokens);
     console.log(tokensString);
 
